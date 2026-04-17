@@ -74,6 +74,7 @@ public class PrimaryController {
     @FXML
     void writeButtonClicked(ActionEvent event) {
         addData();
+        readFirebase();
     }
 
     @FXML
@@ -91,14 +92,14 @@ public class PrimaryController {
         try
         {
             documents = future.get().getDocuments();
-            if(documents.size()>0)
+            if(!documents.isEmpty())
             {
                 System.out.println("Getting (reading) data from firabase database....");
                 listOfUsers.clear();
                 for (QueryDocumentSnapshot document : documents)
                 {
                     outputTextArea.setText(outputTextArea.getText()+ document.getData().get("Name")+ " , Age: "+
-                            document.getData().get("Age")+ " \n ");
+                            document.getData().get("Age")+ " \n");
                     System.out.println(document.getId() + " => " + document.getData().get("Name"));
                     person  = new Person(String.valueOf(document.getData().get("Name")),
                             Integer.parseInt(document.getData().get("Age").toString()));
