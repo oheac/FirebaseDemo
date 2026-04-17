@@ -24,6 +24,8 @@ import javafx.scene.control.TextField;
 
 public class PrimaryController {
     @FXML
+    public TextField phoneNumberField;
+    @FXML
     private TextField ageTextField;
 
     @FXML
@@ -55,6 +57,7 @@ public class PrimaryController {
     void initialize() {
 
         AccessDataView accessDataViewModel = new AccessDataView();
+        phoneNumberField.textProperty().bindBidirectional(accessDataViewModel.phoneNumberProperty());
         nameTextField.textProperty().bindBidirectional(accessDataViewModel.personNameProperty());
         writeButton.disableProperty().bind(accessDataViewModel.isWritePossibleProperty().not());
     }
@@ -99,10 +102,11 @@ public class PrimaryController {
                 for (QueryDocumentSnapshot document : documents)
                 {
                     outputTextArea.setText(outputTextArea.getText()+ document.getData().get("Name")+ " , Age: "+
-                            document.getData().get("Age")+ " \n");
+                            document.getData().get("Age")+ ", " + document.getData().get("PhoneNumber") + " \n");
                     System.out.println(document.getId() + " => " + document.getData().get("Name"));
                     person  = new Person(String.valueOf(document.getData().get("Name")),
-                            Integer.parseInt(document.getData().get("Age").toString()));
+                            Integer.parseInt(document.getData().get("Age").toString()),
+                            String.valueOf(document.getData().get("PhoneNumber")));
                     listOfUsers.add(person);
                 }
             }
@@ -151,6 +155,7 @@ public class PrimaryController {
         Map<String, Object> data = new HashMap<>();
         data.put("Name", nameTextField.getText());
         data.put("Age", Integer.parseInt(ageTextField.getText()));
+        data.put("PhoneNumber", phoneNumberField.getText());
 
         //asynchronously write data
         ApiFuture<WriteResult> result = docRef.set(data);

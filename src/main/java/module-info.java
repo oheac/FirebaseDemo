@@ -11,7 +11,10 @@ module aydin.firebasedemo {
     requires google.cloud.firestore;
     requires google.cloud.core;
     requires com.google.api.apicommon;
-
+    requires com.google.gson;
+    requires okhttp3;
+    requires com.google.api.client;
+    requires com.google.api.client.json.gson;
 
 
     opens aydin.firebasedemo to javafx.fxml;
